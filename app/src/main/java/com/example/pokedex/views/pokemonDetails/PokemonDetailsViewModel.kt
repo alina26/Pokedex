@@ -10,14 +10,16 @@ import com.example.domain.Result
 import com.example.pokedex.toItem
 import com.example.pokedex.views.pokemonDetails.models.PokemonDetailsViewState
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class PokemonDetailsViewModel(private val repository: PokemonRepository) : ViewModel() {
+class PokemonDetailsViewModel @Inject constructor(val repository: PokemonRepository) : ViewModel() {
 
     private val _pokemonDetailsViewState: MutableState<PokemonDetailsViewState> =
         mutableStateOf(PokemonDetailsViewState.Loading)
     val pokemonDetailsViewState: State<PokemonDetailsViewState> get() = _pokemonDetailsViewState
 
     fun loadPokemon(name: String) {
+        _pokemonDetailsViewState.value = PokemonDetailsViewState.Loading
         viewModelScope.launch {
             val pokemon = repository.getPokemonByName(name)
             when (pokemon) {

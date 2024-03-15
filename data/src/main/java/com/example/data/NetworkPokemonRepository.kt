@@ -6,7 +6,7 @@ import com.example.domain.Result
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-class NetworkPokemonRepository(private val dataSource: PokedexApiService) : PokemonRepository {
+class NetworkPokemonRepository (private val dataSource: PokedexApiService) : PokemonRepository {
 
     override suspend fun getPokemonList(): Result<List<PokemonEntity>> =
         withContext(Dispatchers.IO) {

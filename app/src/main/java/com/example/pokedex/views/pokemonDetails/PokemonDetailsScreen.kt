@@ -17,8 +17,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.rememberAsyncImagePainter
-import com.example.data.NetworkPokemonRepository
-import com.example.data.createPokedexApiService
 import com.example.pokedex.R
 import com.example.pokedex.views.pokemonDetails.PokemonDetailsViewModel
 import com.example.pokedex.views.pokemonDetails.models.PokemonDetailsViewState
@@ -26,7 +24,7 @@ import com.example.pokedex.views.pokemonDetails.models.PokemonDetailsViewState
 @Composable
 fun PokemonDetailsScreen(
     pokemonId: String,
-    viewModel: PokemonDetailsViewModel = PokemonDetailsViewModel(NetworkPokemonRepository(dataSource = createPokedexApiService())),
+    viewModel: PokemonDetailsViewModel,
     modifier: Modifier,
 ) {
     LaunchedEffect(Unit) {
@@ -60,7 +58,7 @@ fun PokemonDetailsScreen(
             }
         }
 
-        is PokemonDetailsViewState.Error -> {
+        is PokemonDetailsViewState.Loading -> {
             Text(
                 text = stringResource(R.string.loading),
                 modifier = Modifier.fillMaxSize(),
@@ -68,7 +66,7 @@ fun PokemonDetailsScreen(
             )
         }
 
-        PokemonDetailsViewState.Loading -> {
+        is PokemonDetailsViewState.Error -> {
             Text(
                 text = stringResource(R.string.error),
                 modifier = Modifier.fillMaxSize(),

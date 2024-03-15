@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
+    id("kotlin-kapt")
 }
 
 android {
@@ -23,7 +24,10 @@ android {
     buildTypes {
         release {
             isMinifyEnabled = false
-            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
         }
     }
     compileOptions {
@@ -46,19 +50,27 @@ android {
     }
 }
 
+val daggerVersion = "2.51"
+val dagger = "com.google.dagger:dagger:$daggerVersion"
+val daggerCompiler = "com.google.dagger:dagger-compiler:$daggerVersion"
+
+val coil = "io.coil-kt:coil-compose:2.0.0-rc01"
+val composeLiveData = "androidx.compose.runtime:runtime-livedata:1.2.0"
+
 dependencies {
+
+    implementation(project(":domain"))
+    implementation(project(":data"))
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
     implementation(platform(libs.androidx.compose.bom))
-    implementation("androidx.compose.runtime:runtime-livedata:1.2.0")
+    implementation(composeLiveData)
     implementation(libs.androidx.ui)
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
-    implementation(project(":domain"))
-    implementation(project(":data"))
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -67,5 +79,15 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
     implementation(libs.androidx.navigation.compose)
-    implementation("io.coil-kt:coil-compose:2.0.0-rc01")
+
+    //Coil
+    implementation(coil)
+
+    //Dagger
+    implementation(dagger)
+    kapt(daggerCompiler)
+
+    //Retrofit
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
 }
